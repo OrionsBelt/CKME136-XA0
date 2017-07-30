@@ -1,1 +1,6 @@
 
+Python Directory:
+  pickle<files for serialization of python functions>
+  short_reviews<short movie reviews used for model validation to determine accuracy of model>
+  data<input/output data from bsdetector and output of sentiment analysis>
+  code<sentiment code>
