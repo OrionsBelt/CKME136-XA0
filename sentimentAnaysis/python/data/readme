@@ -1,1 +1,7 @@
 
+Directory:
+  fake_sentiment<bsdetector data source of researched fake news sources>
+  fake_sentiment_short<714 input entries from fake_sentiment dataset>
+  senti_fake_sentiment_short<714 output entries from fake_sentiment analysis>
+  senti_fake_sentiment_short
+  senti_fake_sentiment_short
