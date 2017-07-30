@@ -1,0 +1,10 @@
+Directory:
+  code_test
+  lemmatize_words
+  pos_tagging<part of speech tagging>
+  sentiment_module
+  sentiwordnet_analysis
+  stop_words
+  test_sentiment
+  train_pos<train part of speech tagging>
+  train_test_Classifier
