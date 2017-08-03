@@ -1,0 +1,146 @@
+---
+  title: "KNN_fake"
+output: github_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library("class")
+library("gmodels")
+```
+
+## GitHub Documents
+
+This is an R Markdown format used for publishing markdown documents to GitHub. When you click the **Knit** button all R code chunks are run and a markdown file (.md) suitable for publishing to GitHub is generated.
+
+## Including Code
+
+You can include R code in the document as follows:
+
+```{r fake}
+data(fake_norm_red_lines_senti_cl)
+head(fake_norm_red_lines_senti_cl)
+str(fake_norm_red_lines_senti_cl)
+summary(fake_norm_red_lines_senti_cl)
+```
+
+Let's split the  dataset into training and test set.
+```{r}
+train_index <- sample(1:nrow(fake_norm_red_lines_senti_cl), 0.7 * nrow(fake_norm_red_lines_senti_cl))
+train.set <- fake_norm_red_lines_senti_cl[train_index,]
+test.set  <- fake_norm_red_lines_senti_cl[-train_index,]
+```
+
+Now, we remove the Type column from our training and test datasets.
+```{r}
+train.set_new <- train.set[-4]
+test.set_new <- test.set[-4]
+```
+Now, we remove the Sentiment column from our training and test datasets.
+```{r}
+train.set_new <- train.set_new [-4]
+test.set_new <- test.set_new [-4]
+```
+
+Now, we store the labels from our training and test datasets.
+```{r}
+fake_train_labels <- train.set$fake_norm_red_lines_senti.type 
+fake_test_labels <- test.set$fake_norm_red_lines_senti.type
+```
+
+For k=3, let's make our prediction on the test set.
+```{r}
+fake_knn_prediction <- knn(train = train.set_new, test = test.set_new, cl= fake_train_labels, k = 3) 
+```
+
+Let's see the confusion matrix.
+```{r}
+CrossTable(x=fake_test_labels, y=fake_knn_prediction, prop.chisq=FALSE)
+```
+Calculate Accuracy of each class
+```{r}
+accuracy_bias<-12/17
+accuracy_bias
+accuracy_bs<-168/171
+accuracy_bs
+accuracy_conspiracy<-24/24
+accuracy_conspiracy
+```
+Calculate Precision of each class
+```{r}
+precision_bias<-12/(12+5)
+precision_bias
+precision_bs<-168/(168+3)
+precision_bs
+precision_conspiracy<-24/(24+0)
+precision_conspiracy
+```
+Calculate Sensitivity of each class
+```{r}
+sensitivity_bias<-12/(12+3)
+sensitivity_bias
+sensitivity_bs<-168/(168+7)
+sensitivity_bs
+sensitivity_conspiracy<-24/(24+0)
+sensitivity_conspiracy
+```
+
+
+For k=11, let's make our prediction on the test set.
+```{r}
+fake_knn_prediction <- knn(train = train.set_new, test = test.set_new, cl= fake_train_labels, k = 11) 
+```
+
+Let's see the confusion matrix.
+```{r}
+CrossTable(x=fake_test_labels, y=fake_knn_prediction, prop.chisq=FALSE)
+```
+
+Calculate Accuracy of each class
+```{r}
+accuracy_bias<-3/17
+accuracy_bias
+accuracy_bs<-170/171
+accuracy_bs
+accuracy_conspiracy<-22/24
+accuracy_conspiracy
+```
+Calculate Precision of each class
+```{r}
+precision_bias<-3/17
+precision_bias
+precision_bs<-170/171
+precision_bs
+precision_conspiracy<-22/24
+precision_conspiracy
+```
+
+For k=20, let's make our prediction on the test set.
+```{r}
+fake_knn_prediction <- knn(train = train.set_new, test = test.set_new, cl= fake_train_labels, k = 20) 
+```
+
+Let's see the confusion matrix.
+```{r}
+CrossTable(x=fake_test_labels, y=fake_knn_prediction, prop.chisq=FALSE)
+```
+
+Summary of dataset
+```{r}
+#summary(train.set_new)
+#str(test.set_new)
+```
+Calculate Accuracy of each class
+```{r}
+accuracy_bs<-170/171
+accuracy_bs
+accuracy_conspiracy<-22/24
+accuracy_conspiracy
+```
+Calculate Precision of each class
+```{r}
+precision_bs<-170/171
+precision_bs
+precision_conspiracy<-22/24
+precision_conspiracy
+```
