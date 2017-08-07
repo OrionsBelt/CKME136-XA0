@@ -1,0 +1,56 @@
+
+---
+title: "Fake News Decision Tree"
+output: word_document
+---
+
+decision trees 
+```{r setup, include=FALSE}
+library("party")
+```
+
+We will be using the iris data set for this example.
+```{r}
+head(fake_norm_red_lines_senti_cl)
+str(fake_norm_red_lines_senti_cl)
+```
+
+
+```{r}
+fake_ctree <- ctree(fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.type ~ fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.domain_rank +fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.spam_score + fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.comments + fake_norm_red_lines_senti_cl$obj + fake_norm_red_lines_senti_cl$pos + fake_norm_red_lines_senti_cl$neg, data=fake_norm_red_lines_senti_cl)
+```
+
+Let's print the decision tree.
+```{r}
+print(fake_ctree)
+```
+
+Now, let's plot the decision tree.
+```{r}
+plot(fake_ctree, type="simple")
+```
+
+Split into training and test sets
+```{r}
+train_index <- sample(1:nrow(fake_norm_red_lines_senti_cl), 0.7 * nrow(fake_norm_red_lines_senti_cl))
+train.set <- fake_norm_red_lines_senti_cl[train_index,]
+test.set  <- fake_norm_red_lines_senti_cl[-train_index,]
+```
+
+Let's run our model on the training set.
+```{r}
+fake_ctree_model <- ctree(fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.type ~ fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.domain_rank +fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.spam_score + fake_norm_red_lines_senti_cl$fake_norm_red_lines_senti.comments + fake_norm_red_lines_senti_cl$obj + fake_norm_red_lines_senti_cl$pos+ fake_norm_red_lines_senti_cl$neg, data=train.set)
+fake_ctree_model
+```
+
+Now, let's make our prediction on the test set.
+```{r}
+fake_ctree_prediction <- predict(fake_ctree_model, test.set) 
+# gives the probability for each class
+head(fake_ctree_prediction)
+```
+
+Let's see the confusion matrix.
+```{r}
+table(fake_ctree_prediction, test.set$fake_norm_red_lines_senti.type)
+```
